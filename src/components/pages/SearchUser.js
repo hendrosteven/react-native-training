@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {StyleSheet} from 'react-native';
 import {
     Container,
     Content,
@@ -8,42 +9,59 @@ import {
     Body,
     Button,
     Title,
-    CardItem
+    CardItem,
+    Left,
+    Icon,
+    Item,
+    Input
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
 export default class AddUser extends Component {
     render() {
         return (
             <Container>
-                <Header>
+                <Header searchBar rounded>
+                    <Left>
+                        <Icon
+                            onPress=
+                            {() => {Actions.pop(); }}
+                            name="arrow-back"
+                            style={{
+                            color: 'white'
+                        }}/>
+                    </Left>
                     <Body>
-                        <Title>Search User</Title>
+                        <Text style={styles.titleText}>Contact Apps</Text>
                     </Body>
                 </Header>
                 <Content padder>
                     <Card>
                         <CardItem>
                             <Body>
-                                <Text>
-                                    This is Page One, Press button to goto page two
-                                </Text>
+                                <Item>
+                                    <Icon name="ios-search"/>
+                                    <Input placeholder="Search"/>
+                                    <Icon name="ios-people"/>
+                                </Item>
+                                <Button full>
+                                    <Text>Search</Text>
+                                </Button>
                             </Body>
                         </CardItem>
                     </Card>
-                    <Button
-                        dark
-                        bordered
-                        style
-                        ={{
-                        alignSelf: 'center',
-                        margin: 30
-                    }}
-                        onPress=
-                        {() => {Actions.pop(); }}>
-                        <Text>Home</Text>
-                    </Button>
+                   
                 </Content>
             </Container>
         );
     }
 }
+
+const styles = StyleSheet.create({
+
+    titleText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'white'
+    }
+
+});
