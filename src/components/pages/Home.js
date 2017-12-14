@@ -38,7 +38,10 @@ export default class Home extends Component {
     }
 
     getUsers() {
-        fetch("https://contact-svr.herokuapp.com/contact", {method: "GET"}).then((response) => response.json()).then((responseData) => {
+        fetch("https://contact-svr.herokuapp.com/contact", 
+        {method: "GET"})
+        .then((response) => response.json())
+        .then((responseData) => {
             this.setState({isLoading: false, users: responseData})
         }).done();
     }
