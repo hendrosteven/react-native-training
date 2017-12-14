@@ -28,7 +28,7 @@ export default class AppHeader extends Component {
           <Text style={styles.titleText}>Contact Apps</Text>
         </Body>
         <Right>
-          <Icon name="search" style={{
+          <Icon onPress={this.props.searchUserHandler} name="search" style={{
             color: 'white'
           }}></Icon>
         </Right>

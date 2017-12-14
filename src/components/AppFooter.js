@@ -13,7 +13,7 @@ export default class AppFooter extends Component {
     return (
       <Footer>
         <FooterTab>
-          <Button full>
+          <Button full onPress={this.props.addUserHandler}>
             <Text>Add New User</Text>
           </Button>
         </FooterTab>
