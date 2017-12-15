@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Alert} from 'react-native';
+import {StyleSheet, View, Alert, Image} from 'react-native';
 import {
     Container,
     Content,
@@ -21,6 +21,7 @@ import {
     Right
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
+import RNFS from 'react-native-fs';
 
 export default class AddUser extends Component {
 
@@ -37,32 +38,55 @@ export default class AddUser extends Component {
 
     onSaveUser = () => {
         this.setState({onSave: true});
-        fetch('https://contact-svr.herokuapp.com/contact', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-                body: JSON.stringify({fullName: this.state.fullName, phone: this.state.phone, email: this.state.email, address: this.state.address, photo: ''})
+        //base64 process
+        RNFS
+            .readFile(this.props.data.path, 'base64')
+            .then(base64 => {
+                fetch('https://contact-svr.herokuapp.com/contact', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                        body: JSON.stringify({
+                            fullName: this.state.fullName, 
+                            phone: this.state.phone, 
+                            email: this.state.email, 
+                            address: this.state.address, 
+                            photo: base64})
+                    })
+                    .then(response => response.json())
+                    .then(responseJson => {
+                        this.setState({onSave: false});
+                        Alert.alert('Success', 'Your new contact saved!', [
+                            {
+                                text: 'OK',
+                                onPress: () => {
+                                    Actions.home();
+                                }
+                            }
+                        ], {cancelable: false})
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
             })
-            .then(response => response.json())
-            .then(responseJson => {
-                this.setState({onSave: false});
-                Alert.alert('Success', 'Your new contact saved!', [
-                    {
-                        text: 'OK',
-                        onPress: () => {
-                            Actions.home();
-                        }
-                    }
-                ], {cancelable: false})
-            })
-            .catch(error => {
-                console.error(error);
-            });;
+
     }
 
     render() {
+        console.log(this.props.data);
+        let photo = <View></View>;
+        if (this.props.data) {
+            photo = <Image
+                source={{
+                uri: this.props.data.path
+            }}
+                style={{
+                width: '100%',
+                height: 200
+            }}/>
+        }
         return (
             <Container>
                 <Header>
@@ -82,14 +106,15 @@ export default class AddUser extends Component {
                         <Icon
                             name="camera"
                             onPress={() => {
-                                Actions.takePicture();
-                            }}
+                            Actions.takePicture();
+                        }}
                             style={{
                             color: 'white'
                         }}/>
                     </Right>
                 </Header>
                 <Content padder>
+                    {photo}
                     <Item floatingLabel>
                         <Label>Full Name</Label>
                         <Input onChangeText={(text) => this.setState({fullName: text})}/>

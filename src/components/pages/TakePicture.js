@@ -9,9 +9,8 @@ export default class TakePicture extends Component {
         this
             .camera
             .capture()
-            .then((data) => {
-                console.log(data)
-                Actions.addUser();
+            .then((data) => {               
+                Actions.pop({refresh: {data}});
             })
             .catch(err => console.error(err));
     }
