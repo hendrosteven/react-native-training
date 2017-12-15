@@ -95,7 +95,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.todoapp"
@@ -106,6 +106,8 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        manifestPlaceholders = [onesignal_app_id: "dd51e694-6a36-4661-bb04-4a5b157cf5b9",
+                                onesignal_google_project_number: "867526263141"]
     }
     splits {
         abi {
@@ -137,6 +139,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-onesignal')
     compile project(':react-native-fs')
     compile project(':react-native-camera')
     compile fileTree(dir: "libs", include: ["*.jar"])
