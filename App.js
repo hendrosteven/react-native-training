@@ -7,6 +7,7 @@ import AddUser from './src/components/pages/AddUser';
 import SearchUser from './src/components/pages/SearchUser';
 import DetailUser from './src/components/pages/DetailUser';
 import DinamicText from './src/components/pages/DinamicText';
+import TakePicture from './src/components/pages/TakePicture';
 
 export default class App extends Component {
 
@@ -19,6 +20,7 @@ export default class App extends Component {
           <Scene key="searchUser" component={SearchUser} title="Search User"/>
           <Scene key="detailUser" component={DetailUser} title="Detail User"/>
           <Scene key="dinamicText" component={DinamicText} title="Dinamic Text Input" />
+          <Scene key="takePicture" component={TakePicture} title="Take Picture" />
         </Scene>
       </Router>
     );
