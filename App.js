@@ -6,6 +6,7 @@ import Home from './src/components/pages/Home';
 import AddUser from './src/components/pages/AddUser';
 import SearchUser from './src/components/pages/SearchUser';
 import DetailUser from './src/components/pages/DetailUser';
+import DinamicText from './src/components/pages/DinamicText';
 
 export default class App extends Component {
 
@@ -17,6 +18,7 @@ export default class App extends Component {
           <Scene key="addUser" component={AddUser} title="Add User"/>
           <Scene key="searchUser" component={SearchUser} title="Search User"/>
           <Scene key="detailUser" component={DetailUser} title="Detail User"/>
+          <Scene key="dinamicText" component={DinamicText} title="Dinamic Text Input" />
         </Scene>
       </Router>
     );
