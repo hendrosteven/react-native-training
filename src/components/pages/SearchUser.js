@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
     Container,
     Content,
@@ -17,7 +17,7 @@ import {
     List,
     ListItem,
     Thumbnail,
-    Right
+    Right, Spinner
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
 
@@ -37,7 +37,7 @@ export default class AddUser extends Component {
     }
 
     onStartSearch = () => {
-        this.setState({onSearching: true, searchResult: []})
+        this.setState({onSearching: true, searchResult: [], isFound:true})
         fetch('https://contact-svr.herokuapp.com/contact/search', {
             method: 'POST',
             headers: {
@@ -48,6 +48,7 @@ export default class AddUser extends Component {
             })
             .then(response => response.json())
             .then(responseJson => {
+               
                 this.setState({searchResult: responseJson, onSearching: false})
             })
             .catch(error => {
@@ -62,9 +63,13 @@ export default class AddUser extends Component {
                 .state
                 .searchResult
                 .map(user => {
-                    let photo = 'data:image/png;base64,' + user.photo;
+                    if(user.photo){
+                        photo = 'data:image/png;base64,' + user.photo;
+                    }else{
+                        photo = 'https://www.ntw.nhs.uk/content/uploads/2016/07/male-fallback.jpg';
+                    }
                     return (
-                        <ListItem key={user.id}>
+                        <ListItem key={user.id} style={styles.listStyle}>
                             <Thumbnail
                                 square
                                 size={100}
@@ -100,14 +105,26 @@ export default class AddUser extends Component {
                     </Body>
                 </Header>
                 <Content>
-                    <Item>
+                    <Item style={{paddingHorizontal:10}}>
                         <Icon name="ios-people"/>
                         <Input placeholder="Search" onChangeText={(text) => this.updateText({text})}/>
                         <Icon name="ios-search" onPress={this.onStartSearch}/>
                     </Item>
                     <List>
                         {userList}
-                    </List>
+                    </List>                    
+                    {
+                        this.state.onSearching 
+                        ? <View>
+                            <Spinner color='red'/>
+                          </View>
+                        : <View></View>
+                    }
+                    {
+                        this.state.searchResult.length<=0 
+                        ? <View style={{paddingHorizontal:20}}><Text>No record found</Text></View>
+                        : <View></View>
+                    }
                 </Content>
             </Container>
         );
@@ -120,6 +137,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: 'white'
+    },
+    listStyle:{
+        width:'100%',
+        marginLeft: 0,
+        marginRight: 0,
+        paddingHorizontal: 10
     }
 
 });

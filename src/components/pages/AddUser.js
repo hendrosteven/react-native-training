@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View, Alert} from 'react-native';
 import {
     Container,
     Content,
@@ -10,7 +10,7 @@ import {
     Button,
     Title,
     CardItem,Item,Label,Input,
-    Left, Icon, Footer,FooterTab
+    Left, Icon, Footer,FooterTab, Spinner
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
 
@@ -23,12 +23,13 @@ export default class AddUser extends Component {
             fullName: '',
             phone: '',
             email: '',
-            address: ''
+            address: '',
+            onSave: false
         }
     }
 
     onSaveUser = () => {
-        console.log(this.state);
+        this.setState({onSave: true});
         fetch('https://contact-svr.herokuapp.com/contact', {
             method: 'POST',
             headers: {
@@ -45,7 +46,17 @@ export default class AddUser extends Component {
             })
             .then(response => response.json())
             .then(responseJson => {
-               console.log(responseJson);
+               this.setState({onSave: false});
+               Alert.alert(
+                'Success',
+                'Your new contact saved!',
+                [
+                  {text: 'OK', onPress: () => {
+                        Actions.home();
+                  }},
+                ],
+                { cancelable: false }
+              )
             })
             .catch(error => {
                 console.error(error);
@@ -86,6 +97,11 @@ export default class AddUser extends Component {
                         <Label>Address</Label>
                         <Input onChangeText={(text) => this.setState({address:text})}/>
                     </Item>
+                    {
+                        this.state.onSave 
+                        ? <View style={styles.center}><Spinner color='red'/></View>
+                        : <View></View>
+                    }
                 </Content>
                 <Footer>
                     <FooterTab>
@@ -105,6 +121,10 @@ const styles = StyleSheet.create({
             fontSize: 20,
             fontWeight: 'bold',
             color: 'white'
+        },
+        center:{
+            justifyContent: 'center',
+            alignItems: 'center'
         }
     
     });

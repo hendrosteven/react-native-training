@@ -53,9 +53,14 @@ export default class Home extends Component {
                 .state
                 .users
                 .map(user => {
-                    let photo = 'data:image/png;base64,' + user.photo;
+                    let photo = '';
+                    if(user.photo){
+                        photo = 'data:image/png;base64,' + user.photo;
+                    }else{
+                        photo = 'https://www.ntw.nhs.uk/content/uploads/2016/07/male-fallback.jpg';
+                    }
                     return (
-                        <ListItem key={user.id}>
+                        <ListItem key={user.id} style={styles.listStyle}>
                             <Thumbnail
                                 square
                                 size={80}
@@ -114,5 +119,11 @@ const styles = StyleSheet.create({
         marginTop: 200,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    listStyle:{
+        width:'100%',
+        marginLeft: 0,
+        marginRight: 0,
+        paddingHorizontal: 10
     }
 })
