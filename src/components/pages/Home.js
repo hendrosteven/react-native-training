@@ -60,7 +60,10 @@ export default class Home extends Component {
                         photo = 'https://www.ntw.nhs.uk/content/uploads/2016/07/male-fallback.jpg';
                     }
                     return (
-                        <ListItem key={user.id} style={styles.listStyle}>
+                        <ListItem onPress={()=>{
+                            Actions.detailUser({user});
+                        }}
+                            key={user.id} style={styles.listStyle}>
                             <Thumbnail
                                 square
                                 size={80}
